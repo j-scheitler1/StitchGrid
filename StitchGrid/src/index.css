@@ -1,1 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+@theme {
+    --font-sans: "Nunito", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-heading: "Quicksand", "Nunito", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans);
+}
+
+h1, h2, h3, .font-heading {
+    font-family: var(--font-heading);
+}
+
+::selection {
+    background-color: #fbcfe8;
+    color: #831843;
+}
+
+/* Thin, unobtrusive scrollbars for the canvas viewport and modal lists. */
+.thin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #f5b8d8 transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #f5b8d8;
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #ec8fc0;
+}
+
+/* A soft dotted backdrop behind the canvas, like candy-colored graph paper. */
+.canvas-backdrop {
+    background-color: #fdf6f3;
+    background-image: radial-gradient(#f6cfe0 1.4px, transparent 1.4px);
+    background-size: 22px 22px;
+}
+
+@keyframes overlay-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modal-pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-4deg); }
+    75% { transform: rotate(4deg); }
+}
+
+.animate-overlay-in {
+    animation: overlay-fade-in 150ms ease-out;
+}
+
+.animate-modal-in {
+    animation: modal-pop-in 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-wiggle:hover {
+    animation: wiggle 300ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-overlay-in,
+    .animate-modal-in,
+    .hover-wiggle:hover {
+        animation: none;
+    }
+}
