@@ -1,16 +1,17 @@
 type ButtonProps = {
-    variant?: 'primary' | 'secondary';
+    variant?: 'primary' | 'secondary' | 'danger';
     type?: 'button' | 'submit';
     disabled?: boolean;
     onClick?: () => void;
     children: React.ReactNode;
 }
 
-const baseStyles = 'rounded-full px-4 py-2 font-medium';
+const baseStyles = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100';
 
 const variantStyles = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700',
-    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+    primary: 'bg-pink-500 text-white shadow-sm shadow-pink-200 hover:bg-pink-600',
+    secondary: 'bg-purple-100 text-purple-900 hover:bg-purple-200',
+    danger: 'bg-rose-500 text-white shadow-sm shadow-rose-200 hover:bg-rose-600'
 };
 
 export default function Button({

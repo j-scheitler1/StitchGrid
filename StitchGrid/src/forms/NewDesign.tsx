@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
 import Button from '../components/Button';
-import type { Cell, Design } from '../types';
+import { createDefaultCells, createDesignId, DEFAULT_GRID_LINE_COLOR } from '../types';
+import type { Design } from '../types';
 
 type NewDesignProps = {
     setDesign: (design: Design | null) => void;
 }
-
-const CELL_DEFAULT_COLOR = '#ffffff';
 
 export default function NewDesign({ setDesign }: NewDesignProps) {
     const [name, setName] = useState('');
@@ -30,15 +29,14 @@ export default function NewDesign({ setDesign }: NewDesignProps) {
     const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
         e.preventDefault();
 
-        const cells: Cell[] = Array.from({ length: rows * columns }, () => ({
-            color: CELL_DEFAULT_COLOR,
-            number: 0,
-        }));
+        const cells = createDefaultCells(rows, columns);
 
         const design: Design = {
+            id: createDesignId(),
             name: name.trim(),
+            opacity: 100,
             version: 1,
-            grid: { rows, columns, cells },
+            grid: { rows, columns, cells, offset: { x: 0, y: 0 }, scale: 1, completedRows: 0, lineColor: DEFAULT_GRID_LINE_COLOR },
             ...(photoData && {
                 photo: {
                     data: photoData,
@@ -48,17 +46,17 @@ export default function NewDesign({ setDesign }: NewDesignProps) {
                 },
             }),
         };
-
         setDesign(design);
     };
 
-    const inputStyles = 'rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none';
+    const inputStyles = 'rounded-xl border-2 border-purple-200 px-3 py-2 text-sm text-gray-900 transition-shadow focus:border-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-100';
+    const labelStyles = 'flex flex-col gap-1.5 text-sm font-medium text-gray-700';
 
     return (
         <div>
-            <h2 className="mb-4 text-xl font-semibold">Create New Design</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <label className="flex flex-col gap-1">
+            <h2 className="font-heading mb-5 text-xl font-bold text-gray-900">✨ Create New Design</h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                <label className={labelStyles}>
                     Design Name
                     <input
                         type="text"
@@ -69,43 +67,45 @@ export default function NewDesign({ setDesign }: NewDesignProps) {
                         className={inputStyles}
                     />
                 </label>
-                <fieldset className="flex gap-4">
-                    <legend className="mb-1">Grid Size</legend>
-                    <label className="flex flex-1 flex-col gap-1 text-sm text-gray-600">
-                        Columns (X)
-                        <input
-                            type="number"
-                            required
-                            min={1}
-                            max={200}
-                            value={columns}
-                            onChange={(e) => setColumns(Number(e.target.value))}
-                            className={inputStyles}
-                        />
-                    </label>
-                    <label className="flex flex-1 flex-col gap-1 text-sm text-gray-600">
-                        Rows (Y)
-                        <input
-                            type="number"
-                            required
-                            min={1}
-                            max={200}
-                            value={rows}
-                            onChange={(e) => setRows(Number(e.target.value))}
-                            className={inputStyles}
-                        />
-                    </label>
+                <fieldset className="flex flex-col gap-2">
+                    <legend className="mb-1 text-sm font-medium text-gray-700">Grid Size</legend>
+                    <div className="flex gap-4">
+                        <label className={`flex-1 ${labelStyles}`}>
+                            Columns (X)
+                            <input
+                                type="number"
+                                required
+                                min={1}
+                                max={200}
+                                value={columns}
+                                onChange={(e) => setColumns(Number(e.target.value))}
+                                className={inputStyles}
+                            />
+                        </label>
+                        <label className={`flex-1 ${labelStyles}`}>
+                            Rows (Y)
+                            <input
+                                type="number"
+                                required
+                                min={1}
+                                max={200}
+                                value={rows}
+                                onChange={(e) => setRows(Number(e.target.value))}
+                                className={inputStyles}
+                            />
+                        </label>
+                    </div>
                 </fieldset>
-                <label className="flex flex-col gap-1">
+                <label className={labelStyles}>
                     Photo (optional)
                     <input
                         type="file"
                         accept="image/*"
                         onChange={handlePhotoChange}
-                        className="text-sm text-gray-600 file:mr-3 file:rounded-full file:border-0 file:bg-gray-200 file:px-4 file:py-2 file:font-medium hover:file:bg-gray-300"
+                        className="text-sm text-gray-600 file:mr-3 file:rounded-full file:border-0 file:bg-purple-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-purple-900 file:transition-colors hover:file:bg-purple-200"
                     />
                 </label>
-                <div className="mt-2 flex justify-end">
+                <div className="mt-2 flex justify-end border-t border-pink-100 pt-5">
                     <Button type="submit">Create Design</Button>
                 </div>
             </form>
